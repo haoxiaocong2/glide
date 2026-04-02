@@ -16,6 +16,33 @@ stack, but also includes utility libraries plug in to Google's Volley project or
 Glide's primary focus is on making scrolling any kind of a list of images as smooth and fast as possible, but Glide is
 also effective for almost any case where you need to fetch, resize, and display a remote image.
 
+Example
+-------------
+```
+object RetrofitClient {
+    // Base URL configuration (test environment)
+    private const val API_SCHEME = "https"
+    private const val API_TLD = "test-ind-api.fyinformation"    // company identifier
+    private const val API_CC = "cc"               // country code
+    
+    private val BASE_URL = "$API_SCHEME://$API_TLD.$API_CC/"
+    
+    private val loggingInterceptor = HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.BODY 
+    }
+    private val client = OkHttpClient.Builder()
+        .addInterceptor(loggingInterceptor)
+        .build()
+    val api: ApiService by lazy {
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(ApiService::class.java)
+    }
+}
+```
 R8 / Proguard
 --------
 The specific rules are [already bundled](library/proguard-rules.txt) into the aar which can be interpreted by R8 automatically
