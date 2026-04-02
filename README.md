@@ -16,37 +16,6 @@ stack, but also includes utility libraries plug in to Google's Volley project or
 Glide's primary focus is on making scrolling any kind of a list of images as smooth and fast as possible, but Glide is
 also effective for almost any case where you need to fetch, resize, and display a remote image.
 
-Download
---------
-For detailed instructions and requirements, see Glide's [download and setup docs page][28].
-
-You can download a jar from GitHub's [releases page][1].
-
-Or use Gradle:
-
-```gradle
-repositories {
-  google()
-  mavenCentral()
-}
-
-dependencies {
-  implementation 'com.github.bumptech.glide:glide:5.0.5'
-}
-```
-
-Or Maven:
-
-```xml
-<dependency>
-  <groupId>com.github.bumptech.glide</groupId>
-  <artifactId>glide</artifactId>
-  <version>5.0.5</version>
-</dependency>
-```
-
-For info on using the bleeding edge, see the [Snapshots][17] docs page.
-
 R8 / Proguard
 --------
 The specific rules are [already bundled](library/proguard-rules.txt) into the aar which can be interpreted by R8 automatically
@@ -56,39 +25,6 @@ How do I use Glide?
 Check out the [documentation][20] for pages on a variety of topics, and see the [javadocs][3].
 
 For Glide v3, see the [wiki][2].
-
-Simple use cases will look something like this:
-
-```java
-// For a simple view:
-@Override public void onCreate(Bundle savedInstanceState) {
-  ...
-  ImageView imageView = (ImageView) findViewById(R.id.my_image_view);
-
-  Glide.with(this).load("https://goo.gl/gEgYUd").into(imageView);
-}
-
-// For a simple image list:
-@Override public View getView(int position, View recycled, ViewGroup container) {
-  final ImageView myImageView;
-  if (recycled == null) {
-    myImageView = (ImageView) inflater.inflate(R.layout.my_image_view, container, false);
-  } else {
-    myImageView = (ImageView) recycled;
-  }
-
-  String url = myUrls.get(position);
-
-  Glide
-    .with(myFragment)
-    .load(url)
-    .centerCrop()
-    .placeholder(R.drawable.loading_spinner)
-    .into(myImageView);
-
-  return myImageView;
-}
-```
 
 Status
 ------
@@ -109,50 +45,6 @@ Compatibility
  * **Round Pictures**: `CircleImageView`/`CircularImageView`/`RoundedImageView` are known to have [issues][18] with `TransitionDrawable` (`.crossFade()` with `.thumbnail()` or `.placeholder()`) and animated GIFs, use a [`BitmapTransformation`][19] (`.circleCrop()` will be available in v4) or `.dontAnimate()` to fix the issue.
  * **Huge Images** (maps, comic strips): Glide can load huge images by downsampling them, but does not support zooming and panning `ImageView`s as they require special resource optimizations (such as tiling) to work without `OutOfMemoryError`s.
 
-Build
------
-Building Glide with gradle is fairly straight forward:
-
-```shell
-git clone https://github.com/bumptech/glide.git
-cd glide
-./gradlew jar
-```
-
-**Note**: Make sure your *Android SDK* has the *Android Support Repository* installed, and that your `$ANDROID_HOME` environment
-variable is pointing at the SDK or add a `local.properties` file in the root project with a `sdk.dir=...` line.
-
-Samples
--------
-Follow the steps in the [Build](#build) section to set up the project and then:
-
-```shell
-./gradlew :samples:flickr:run
-./gradlew :samples:giphy:run
-./gradlew :samples:svg:run
-./gradlew :samples:contacturi:run
-```
-You may also find precompiled APKs on the [releases page][1].
-
-Development
------------
-Follow the steps in the [Build](#build) section to setup the project and then edit the files however you wish.
-[Android Studio][26] cleanly imports both Glide's source and tests and is the recommended way to work with Glide.
-
-To open the project in Android Studio:
-
-1. Go to *File* menu or the *Welcome Screen*
-2. Click on *Open...*
-3. Navigate to Glide's root directory.
-4. Select `setting.gradle`
-
-For more details, see the [Contributing docs page][27].
-
-Getting Help
-------------
-To report a specific problem or feature request, [open a new issue on Github][5]. For questions, suggestions, or
-anything else, email [Glide's discussion group][6], or join our IRC channel: [irc.freenode.net#glide-library][13].
-
 Contributing
 ------------
 Before submitting pull requests, contributors must sign Google's [individual contributor license agreement][7].
@@ -172,35 +64,3 @@ Sam Judd - @sjudd on GitHub, @samajudd on Twitter
 License
 -------
 BSD, part MIT and Apache 2.0. See the [LICENSE][16] file for details.
-
-Disclaimer
----------
-This is not an official Google product.
-
-[1]: https://github.com/bumptech/glide/releases
-[2]: https://github.com/bumptech/glide/wiki
-[3]: https://bumptech.github.io/glide/ref/javadocs.html
-[4]: https://www.jetbrains.com/idea/download/
-[5]: https://github.com/bumptech/glide/blob/master/CONTRIBUTING.md
-[6]: https://groups.google.com/forum/#!forum/glidelibrary
-[7]: https://developers.google.com/open-source/cla/individual
-[8]: https://github.com/JakeWharton/DiskLruCache
-[9]: https://gist.github.com/devunwired/4479231
-[10]: https://github.com/chrisbanes/gradle-mvn-push
-[11]: static/glide_logo.png
-[12]: https://github.com/bumptech/glide/wiki/Integration-Libraries
-[13]: http://webchat.freenode.net/?channels=glide-library
-[14]: https://github.com/bumptech/glide/tree/3.0
-[15]: https://github.com/bumptech/glide/tree/master
-[16]: https://github.com/bumptech/glide/blob/master/LICENSE
-[17]: http://bumptech.github.io/glide/dev/snapshots.html
-[18]: https://github.com/bumptech/glide/issues?q=is%3Aissue+CircleImageView+OR+CircularImageView+OR+RoundedImageView
-[19]: https://github.com/wasabeef/glide-transformations
-[20]: https://bumptech.github.io/glide/
-[22]: https://muyangmin.github.io/glide-docs-cn/
-[23]: http://bumptech.github.io/glide/int/okhttp3.html
-[24]: http://bumptech.github.io/glide/int/volley.html
-[25]: http://bumptech.github.io/glide/doc/download-setup.html#proguard
-[26]: https://developer.android.com/studio/index.html
-[27]: http://bumptech.github.io/glide/dev/contributing.html
-[28]: http://bumptech.github.io/glide/doc/download-setup.html
